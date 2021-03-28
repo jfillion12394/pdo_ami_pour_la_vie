@@ -100,8 +100,11 @@ function getFriends($pdo):array {
 }
 
 function insertData(string $firstName, string $lastName, $pdo) {
-    $query = "INSERT INTO friend (firstname, lastname) VALUES ('$firstName', '$lastName')";
-    $pdo->exec($query);
+    $query = "INSERT INTO friend (firstname, lastname) VALUES (:firstname, :lastname)";
+    $statement = $pdo->prepare($query);
+    $statement->bindValue(':lastname', $lastName, \PDO::PARAM_STR);
+    $statement->bindValue(':firstname', $firstName, \PDO::PARAM_STR);
+    $statement->execute();
 }
 ?>
 
